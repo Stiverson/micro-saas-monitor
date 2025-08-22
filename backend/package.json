@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/server.js",
-  "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
-    "prisma:migrate": "npx prisma migrate dev --name init",
-    "prisma:generate": "npx prisma generate"
-  },
+"scripts": {
+  "start": "node src/server.js",
+  "dev": "nodemon",
+  "prisma:migrate": "npx prisma migrate dev --name init",
+  "prisma:generate": "npx prisma generate"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
