@@ -1,0 +1,62 @@
+// backend/prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String     @id @default(uuid())
+  email         String     @unique
+  password      String
+  emailVerified Boolean    @default(false)
+  monitors      Monitor[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+enum MonitorType {
+  HTTP
+  PING
+}
+
+enum MonitorStatus {
+  UP
+  DOWN
+  UNKNOWN
+}
+
+enum LogStatus {
+  UP
+  DOWN
+  ERROR
+}
+
+model Monitor {
+  id                String       @id @default(uuid())
+  userId            String
+  user              User         @relation(fields: [userId], references: [id])
+  name              String
+  url               String
+  frequency         Int          // em minutos
+  type              MonitorType
+  status            MonitorStatus @default(UNKNOWN)
+  lastCheckedAt     DateTime?
+  lastResponseTime  Int?         // em milissegundos
+  logs              MonitorLog[]
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+}
+
+model MonitorLog {
+  id            String      @id @default(uuid())
+  monitorId     String
+  monitor       Monitor     @relation(fields: [monitorId], references: [id])
+  status        LogStatus
+  responseTime  Int?
+  errorMessage  String?
+  checkedAt     DateTime    @default(now())
+}
