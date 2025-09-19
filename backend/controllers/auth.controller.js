@@ -1,5 +1,6 @@
-
-const prisma = require('../database/prisma');
+const path = require('path');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -9,6 +10,7 @@ const jwtSecret = process.env.JWT_SECRET;
 if (!jwtSecret) {
   throw new Error('JWT_SECRET not defined in environment variables');
 }
+// ... o resto do seu código
 
 const register = async (req, res) => {
   const { email, password } = req.body;
